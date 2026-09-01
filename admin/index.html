@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Login | TTE RME</title>
+
+    <link rel="stylesheet" href="assets/css/admin.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body class="login-page">
+    <div class="login-wrapper">
+      <div class="login-brand">
+        <div class="brand-content">
+          <div class="brand-logo">
+            <div class="logo-icon">
+              <i class="fa-solid fa-file-signature"></i>
+            </div>
+
+            <div>
+              <strong>TTE RME</strong>
+              <span>Medicine HIS</span>
+            </div>
+          </div>
+
+          <div class="brand-hero">
+            <div class="brand-badge">
+              <i class="fa-solid fa-shield-halved"></i>
+
+              Secure Digital Signature
+            </div>
+
+            <h1>
+              Digital Signature
+
+              <br />
+
+              <span>Healthcare Platform</span>
+            </h1>
+
+            <p>
+              Platform integrasi Tanda Tangan Elektronik untuk Rekam Medis
+              Elektronik dan SIMRS.
+            </p>
+          </div>
+
+          <div class="brand-features">
+            <div>
+              <i class="fa-solid fa-check"></i>
+              Integrasi SIMRS
+            </div>
+
+            <div>
+              <i class="fa-solid fa-check"></i>
+              Rekam Medis Elektronik
+            </div>
+
+            <div>
+              <i class="fa-solid fa-check"></i>
+              Digital Certificate
+            </div>
+          </div>
+        </div>
+
+        <div class="brand-footer">© 2026 Nusa Tirta Teknologi</div>
+      </div>
+
+      <!-- LOGIN -->
+
+      <div class="login-panel">
+        <div class="login-box">
+          <div class="login-header">
+            <div class="login-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h2>Welcome Back 👋</h2>
+
+            <p>Masuk ke Admin Dashboard untuk mengelola Request Demo.</p>
+          </div>
+
+          <div id="alertBox"></div>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label>Username</label>
+
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user"></i>
+
+                <input
+                  type="text"
+                  id="username"
+                  placeholder="Masukkan username"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+
+              <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Masukkan password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="togglePassword"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="login-button" id="loginButton">
+              <span>Masuk ke Dashboard</span>
+
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <div class="login-security">
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Secure Administrator Access
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/login.js"></script>
+  </body>
+</html>

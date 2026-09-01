@@ -1,0 +1,1968 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Request Demo | TTE Mekari Sign × Medicine HIS</title>
+
+    <meta
+      name="description"
+      content="Request demo integrasi TTE Mekari Sign dengan RME Medicine HIS dari Nusa Tirta Teknologi."
+    />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      /* =====================================================
+           RESET
+        ===================================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #7c3aed;
+        --dark: #0f172a;
+        --text: #334155;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --light: #f8fafc;
+        --white: #ffffff;
+        --success: #16a34a;
+        --danger: #dc2626;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f8fafc;
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+      .navbar {
+        height: 76px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+
+        border-bottom: 1px solid #e2e8f0;
+
+        display: flex;
+        align-items: center;
+
+        position: sticky;
+        top: 0;
+
+        z-index: 999;
+      }
+
+      .container {
+        width: min(1180px, 92%);
+        margin: auto;
+      }
+
+      .nav-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        text-decoration: none;
+        color: var(--dark);
+      }
+
+      .brand-icon {
+        width: 44px;
+        height: 44px;
+
+        border-radius: 12px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: white;
+
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+
+        font-size: 20px;
+      }
+
+      .brand-text strong {
+        display: block;
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .nav-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        text-decoration: none;
+
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .nav-back:hover {
+        color: var(--primary);
+      }
+
+      /* =====================================================
+           HERO
+        ===================================================== */
+
+      .hero {
+        position: relative;
+
+        overflow: hidden;
+
+        padding: 80px 0 110px;
+
+        background:
+          radial-gradient(circle at top left, #dbeafe, transparent 40%),
+          radial-gradient(circle at top right, #ede9fe, transparent 40%),
+          #f8fafc;
+      }
+
+      .hero::before {
+        content: "";
+
+        position: absolute;
+
+        width: 450px;
+        height: 450px;
+
+        border-radius: 50%;
+
+        background: rgba(37, 99, 235, 0.08);
+
+        filter: blur(40px);
+
+        top: -200px;
+        right: -100px;
+      }
+
+      .hero-content {
+        max-width: 800px;
+
+        text-align: center;
+
+        margin: auto;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 8px 16px;
+
+        border-radius: 100px;
+
+        background: white;
+
+        border: 1px solid #dbeafe;
+
+        color: var(--primary);
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        margin-bottom: 22px;
+
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 60px);
+
+        line-height: 1.1;
+
+        color: var(--dark);
+
+        margin-bottom: 20px;
+
+        font-weight: 800;
+
+        letter-spacing: -2px;
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, #2563eb, #7c3aed);
+
+        -webkit-background-clip: text;
+
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        max-width: 680px;
+
+        margin: auto;
+
+        color: var(--muted);
+
+        font-size: 17px;
+
+        line-height: 1.8;
+      }
+
+      /* =====================================================
+           MAIN SECTION
+        ===================================================== */
+
+      .main-section {
+        margin-top: -50px;
+
+        position: relative;
+
+        z-index: 5;
+
+        padding-bottom: 90px;
+      }
+
+      .demo-grid {
+        display: grid;
+
+        grid-template-columns:
+          1.5fr
+          0.8fr;
+
+        gap: 28px;
+
+        align-items: start;
+      }
+
+      /* =====================================================
+           FORM CARD
+        ===================================================== */
+
+      .form-card {
+        background: white;
+
+        border-radius: 24px;
+
+        padding: 36px;
+
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.1);
+
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      .card-header {
+        margin-bottom: 30px;
+
+        padding-bottom: 22px;
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      .card-header h2 {
+        font-size: 25px;
+
+        color: var(--dark);
+
+        margin-bottom: 7px;
+      }
+
+      .card-header p {
+        color: var(--muted);
+
+        font-size: 14px;
+      }
+
+      /* =====================================================
+           FORM
+        ===================================================== */
+
+      .form-row {
+        display: grid;
+
+        grid-template-columns:
+          1fr
+          1fr;
+
+        gap: 18px;
+
+        margin-bottom: 18px;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      .form-group label {
+        display: block;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        color: var(--dark);
+
+        margin-bottom: 8px;
+      }
+
+      .required {
+        color: var(--danger);
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+
+        top: 50%;
+
+        left: 15px;
+
+        transform: translateY(-50%);
+
+        color: #94a3b8;
+
+        font-size: 14px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #dbe1ea;
+        background: #fff;
+        border-radius: 12px;
+        outline: none;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--dark);
+        transition: 0.25s;
+      }
+
+      /* Semua input dan select sejajar */
+      input:not([type="checkbox"]),
+      select {
+        height: 50px;
+      }
+
+      /* Input biasa dalam wrapper pakai icon */
+      .input-wrapper input,
+      .input-wrapper select {
+        padding: 0 15px 0 43px;
+      }
+
+      /* Input date tanpa icon */
+      input[type="date"] {
+        padding: 0 15px;
+        display: block;
+      }
+
+      select {
+        height: 50px;
+
+        padding: 0 15px;
+      }
+
+      textarea {
+        min-height: 120px;
+
+        padding: 15px;
+
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary);
+
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+      }
+
+      /* =====================================================
+           PRODUCT OPTIONS
+        ===================================================== */
+
+      .section-label {
+        font-size: 14px;
+
+        font-weight: 800;
+
+        color: var(--dark);
+
+        margin: 26px 0 14px;
+      }
+
+      .product-options {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
+      }
+
+      .product-option {
+        position: relative;
+
+        cursor: pointer;
+      }
+
+      .product-option input {
+        position: absolute;
+
+        opacity: 0;
+
+        pointer-events: none;
+      }
+
+      .product-box {
+        border: 2px solid #e2e8f0;
+
+        border-radius: 16px;
+
+        padding: 18px;
+
+        transition: 0.25s;
+
+        background: #fff;
+
+        height: 100%;
+      }
+
+      .product-box:hover {
+        border-color: #93c5fd;
+
+        transform: translateY(-2px);
+      }
+
+      .product-option input:checked + .product-box {
+        border-color: var(--primary);
+
+        background: #eff6ff;
+      }
+
+      .product-icon {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        margin-bottom: 12px;
+
+        background: #eff6ff;
+
+        color: var(--primary);
+      }
+
+      .product-box h4 {
+        font-size: 14px;
+
+        color: var(--dark);
+
+        margin-bottom: 5px;
+      }
+
+      .product-box p {
+        font-size: 12px;
+
+        color: var(--muted);
+
+        line-height: 1.5;
+      }
+
+      /* =====================================================
+           CHECKBOX
+        ===================================================== */
+
+      .checkbox-wrapper {
+        display: flex;
+
+        gap: 10px;
+
+        align-items: flex-start;
+
+        margin-top: 22px;
+      }
+
+      .checkbox-wrapper input {
+        width: 18px;
+        height: 18px;
+
+        margin-top: 2px;
+
+        accent-color: var(--primary);
+      }
+
+      .checkbox-wrapper label {
+        font-size: 12px;
+
+        color: var(--muted);
+
+        line-height: 1.6;
+      }
+
+      .checkbox-wrapper a {
+        color: var(--primary);
+
+        text-decoration: none;
+
+        font-weight: 600;
+      }
+
+      /* =====================================================
+           BUTTON
+        ===================================================== */
+
+      .submit-btn {
+        width: 100%;
+
+        border: none;
+
+        margin-top: 25px;
+
+        height: 54px;
+
+        border-radius: 14px;
+
+        cursor: pointer;
+
+        font-family: inherit;
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+        color: white;
+
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+
+        transition: 0.25s;
+
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow: 0 18px 35px rgba(37, 99, 235, 0.32);
+      }
+
+      .submit-btn i {
+        margin-right: 8px;
+      }
+
+      /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+      .sidebar {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 22px;
+      }
+
+      .info-card {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+
+        color: white;
+
+        border-radius: 24px;
+
+        padding: 30px;
+
+        position: relative;
+
+        overflow: hidden;
+      }
+
+      .info-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 220px;
+        height: 220px;
+
+        border-radius: 50%;
+
+        background: rgba(59, 130, 246, 0.15);
+
+        top: -100px;
+        right: -80px;
+      }
+
+      .info-card h3 {
+        font-size: 21px;
+
+        margin-bottom: 12px;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .info-card > p {
+        color: #cbd5e1;
+
+        font-size: 13px;
+
+        margin-bottom: 24px;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .benefit-list {
+        list-style: none;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .benefit-list li {
+        display: flex;
+
+        gap: 12px;
+
+        margin-bottom: 16px;
+
+        font-size: 13px;
+
+        color: #e2e8f0;
+      }
+
+      .benefit-list i {
+        width: 22px;
+        height: 22px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: rgba(34, 197, 94, 0.2);
+
+        color: #4ade80;
+
+        font-size: 11px;
+      }
+
+      /* =====================================================
+           PROCESS CARD
+        ===================================================== */
+
+      .process-card {
+        background: white;
+
+        border-radius: 24px;
+
+        padding: 28px;
+
+        border: 1px solid var(--border);
+      }
+
+      .process-card h3 {
+        color: var(--dark);
+
+        margin-bottom: 24px;
+
+        font-size: 18px;
+      }
+
+      .process {
+        display: flex;
+
+        gap: 15px;
+
+        margin-bottom: 20px;
+      }
+
+      .process:last-child {
+        margin-bottom: 0;
+      }
+
+      .process-number {
+        min-width: 36px;
+
+        height: 36px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: var(--primary);
+
+        background: #eff6ff;
+
+        font-size: 13px;
+
+        font-weight: 800;
+      }
+
+      .process-content h4 {
+        font-size: 13px;
+
+        color: var(--dark);
+
+        margin-bottom: 4px;
+      }
+
+      .process-content p {
+        font-size: 12px;
+
+        color: var(--muted);
+      }
+
+      /* =====================================================
+           CONTACT CARD
+        ===================================================== */
+
+      .contact-card {
+        background: #eff6ff;
+
+        border: 1px solid #bfdbfe;
+
+        border-radius: 20px;
+
+        padding: 24px;
+      }
+
+      .contact-card h3 {
+        font-size: 17px;
+
+        color: var(--dark);
+
+        margin-bottom: 10px;
+      }
+
+      .contact-card p {
+        font-size: 13px;
+
+        color: var(--muted);
+
+        margin-bottom: 16px;
+      }
+
+      .contact-button {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 10px;
+
+        width: 100%;
+
+        height: 46px;
+
+        border-radius: 12px;
+
+        background: #16a34a;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 700;
+      }
+
+      /* =====================================================
+           TRUST SECTION
+        ===================================================== */
+
+      .trust-section {
+        padding: 70px 0;
+
+        background: white;
+
+        border-top: 1px solid var(--border);
+      }
+
+      .trust-header {
+        text-align: center;
+
+        margin-bottom: 45px;
+      }
+
+      .trust-header h2 {
+        color: var(--dark);
+
+        font-size: 30px;
+
+        margin-bottom: 12px;
+      }
+
+      .trust-header p {
+        color: var(--muted);
+      }
+
+      .trust-grid {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 18px;
+      }
+
+      .trust-item {
+        padding: 24px;
+
+        text-align: center;
+
+        border: 1px solid var(--border);
+
+        border-radius: 18px;
+
+        transition: 0.25s;
+      }
+
+      .trust-item:hover {
+        transform: translateY(-5px);
+
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      }
+
+      .trust-icon {
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        margin: 0 auto 15px;
+
+        border-radius: 14px;
+
+        background: #eff6ff;
+
+        color: var(--primary);
+
+        font-size: 20px;
+      }
+
+      .trust-item h4 {
+        font-size: 14px;
+
+        color: var(--dark);
+
+        margin-bottom: 6px;
+      }
+
+      .trust-item p {
+        font-size: 12px;
+
+        color: var(--muted);
+      }
+
+      /* =====================================================
+           FOOTER
+        ===================================================== */
+
+      footer {
+        background: #0f172a;
+
+        padding: 30px 0;
+
+        color: #94a3b8;
+      }
+
+      .footer-wrapper {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 20px;
+      }
+
+      .footer-brand {
+        color: white;
+
+        font-size: 14px;
+
+        font-weight: 700;
+      }
+
+      .footer-text {
+        font-size: 12px;
+      }
+
+      /* =====================================================
+           SUCCESS MODAL
+        ===================================================== */
+
+      .modal {
+        position: fixed;
+
+        inset: 0;
+
+        background: rgba(15, 23, 42, 0.65);
+
+        display: none;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 20px;
+
+        z-index: 9999;
+
+        backdrop-filter: blur(6px);
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-box {
+        width: 100%;
+
+        max-width: 460px;
+
+        background: white;
+
+        border-radius: 26px;
+
+        padding: 38px;
+
+        text-align: center;
+
+        animation: modalIn 0.35s ease;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+
+          transform: translateY(20px) scale(0.96);
+        }
+
+        to {
+          opacity: 1;
+
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+
+        margin: 0 auto 20px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #dcfce7;
+
+        color: #16a34a;
+
+        font-size: 34px;
+      }
+
+      .modal-box h2 {
+        color: var(--dark);
+
+        margin-bottom: 12px;
+      }
+
+      .modal-box p {
+        color: var(--muted);
+
+        font-size: 14px;
+
+        margin-bottom: 25px;
+
+        line-height: 1.7;
+      }
+
+      .modal-close {
+        border: none;
+
+        background: var(--primary);
+
+        color: white;
+
+        height: 46px;
+
+        padding: 0 25px;
+
+        border-radius: 12px;
+
+        font-family: inherit;
+
+        font-weight: 700;
+
+        cursor: pointer;
+      }
+
+      /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+      @media (max-width: 900px) {
+        .demo-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .trust-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .navbar {
+          height: 68px;
+        }
+
+        .brand-text span {
+          display: none;
+        }
+
+        .hero {
+          padding: 60px 0 90px;
+        }
+
+        .hero h1 {
+          letter-spacing: -1px;
+        }
+
+        .hero p {
+          font-size: 15px;
+        }
+
+        .form-card {
+          padding: 23px;
+
+          border-radius: 20px;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+
+          gap: 0;
+        }
+
+        .product-options {
+          grid-template-columns: 1fr;
+        }
+
+        .trust-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-wrapper {
+          flex-direction: column;
+
+          text-align: center;
+        }
+
+        .nav-back span {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+    <header class="navbar">
+      <div class="container">
+        <div class="nav-wrapper">
+          <a href="index.html" class="brand">
+            <div class="brand-icon">
+              <i class="fa-solid fa-signature"></i>
+            </div>
+
+            <div class="brand-text">
+              <strong>TTE × Medicine HIS</strong>
+
+              <span>By Nusa Tirta Teknologi</span>
+            </div>
+          </a>
+
+          <a href="index.html" class="nav-back">
+            <i class="fa-solid fa-arrow-left"></i>
+
+            <span>Kembali ke Website</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+     HERO
+===================================================== -->
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="badge">
+            <i class="fa-solid fa-calendar-check"></i>
+
+            Jadwalkan Demo Produk
+          </div>
+
+          <h1>
+            Lihat Langsung
+            <span class="gradient-text"> Integrasi TTE & RME </span>
+
+            dalam Demo Interaktif
+          </h1>
+
+          <p>
+            Pelajari bagaimana TTE Mekari Sign dapat terintegrasi dengan RME
+            Medicine HIS untuk mempercepat proses penandatanganan dokumen medis
+            secara digital.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+     MAIN
+===================================================== -->
+
+    <section class="main-section">
+      <div class="container">
+        <div class="demo-grid">
+          <!-- =====================================================
+                 FORM
+            ===================================================== -->
+
+          <div class="form-card">
+            <div class="card-header">
+              <h2>Request Demo</h2>
+
+              <p>
+                Isi formulir berikut. Tim kami akan menghubungi Anda untuk
+                menjadwalkan sesi demo.
+              </p>
+            </div>
+
+            <form id="demoForm">
+              <!-- NAMA -->
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>
+                    Nama Lengkap
+
+                    <span class="required">*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                      type="text"
+                      id="name"
+                      placeholder="Masukkan nama lengkap"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    Jabatan
+
+                    <span class="required">*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-briefcase"></i>
+
+                    <input
+                      type="text"
+                      id="position"
+                      placeholder="Contoh: Direktur"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- INSTITUSI -->
+
+              <div class="form-group">
+                <label>
+                  Nama Rumah Sakit / Instansi
+
+                  <span class="required">*</span>
+                </label>
+
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-hospital"></i>
+
+                  <input
+                    type="text"
+                    id="institution"
+                    placeholder="Masukkan nama rumah sakit"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- EMAIL + PHONE -->
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>
+                    Email
+
+                    <span class="required">*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="email@rumahsakit.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    Nomor WhatsApp
+
+                    <span class="required">*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-brands fa-whatsapp"></i>
+
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="08xxxxxxxxxx"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- LOCATION -->
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label> Kota / Kabupaten </label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <input type="text" id="city" placeholder="Contoh: Medan" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label> Jenis Fasilitas </label>
+
+                  <select id="facility">
+                    <option value="">Pilih jenis fasilitas</option>
+
+                    <option>Rumah Sakit</option>
+
+                    <option>Klinik</option>
+
+                    <option>Puskesmas</option>
+
+                    <option>Institusi Kesehatan</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- =====================================================
+                         PRODUCT
+                    ===================================================== -->
+
+              <div class="section-label">Produk yang ingin didemokan</div>
+
+              <div class="product-options">
+                <label class="product-option">
+                  <input
+                    type="radio"
+                    name="product"
+                    value="TTE Mekari Sign"
+                    checked
+                  />
+
+                  <div class="product-box">
+                    <div class="product-icon">
+                      <i class="fa-solid fa-signature"></i>
+                    </div>
+
+                    <h4>TTE Mekari Sign</h4>
+
+                    <p>Digital signature untuk dokumen elektronik.</p>
+                  </div>
+                </label>
+
+                <label class="product-option">
+                  <input
+                    type="radio"
+                    name="product"
+                    value="Integrasi TTE RME"
+                  />
+
+                  <div class="product-box">
+                    <div class="product-icon">
+                      <i class="fa-solid fa-file-medical"></i>
+                    </div>
+
+                    <h4>Integrasi TTE RME</h4>
+
+                    <p>Penandatanganan dokumen rekam medis.</p>
+                  </div>
+                </label>
+
+                <label class="product-option">
+                  <input type="radio" name="product" value="Medicine HIS" />
+
+                  <div class="product-box">
+                    <div class="product-icon">
+                      <i class="fa-solid fa-hospital-user"></i>
+                    </div>
+
+                    <h4>Medicine HIS</h4>
+
+                    <p>Hospital Information System terintegrasi.</p>
+                  </div>
+                </label>
+
+                <label class="product-option">
+                  <input type="radio" name="product" value="Full Integration" />
+
+                  <div class="product-box">
+                    <div class="product-icon">
+                      <i class="fa-solid fa-layer-group"></i>
+                    </div>
+
+                    <h4>Full Integration</h4>
+
+                    <p>TTE + RME + Medicine HIS dalam satu workflow.</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- =====================================================
+                         NEEDS
+                    ===================================================== -->
+
+              <div class="section-label">Kebutuhan Integrasi</div>
+
+              <div class="form-group">
+                <textarea
+                  id="needs"
+                  placeholder="Ceritakan kebutuhan Anda. Contoh: Integrasi TTE untuk Resume Medis, CPPT, Surat Kontrol, dan dokumen RME lainnya."
+                ></textarea>
+              </div>
+
+              <!-- =====================================================
+                         SCHEDULE
+                    ===================================================== -->
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label> Preferensi Tanggal Demo </label>
+
+                  <input type="date" id="date" />
+                </div>
+
+                <div class="form-group">
+                  <label> Preferensi Waktu </label>
+
+                  <select id="time">
+                    <option value="">Pilih waktu</option>
+
+                    <option>09.00 - 10.00 WIB</option>
+
+                    <option>10.00 - 11.00 WIB</option>
+
+                    <option>13.00 - 14.00 WIB</option>
+
+                    <option>14.00 - 15.00 WIB</option>
+
+                    <option>15.00 - 16.00 WIB</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- =====================================================
+                         AGREEMENT
+                    ===================================================== -->
+
+              <div class="checkbox-wrapper">
+                <input type="checkbox" id="agreement" required />
+
+                <label for="agreement">
+                  Saya menyetujui bahwa data yang diberikan dapat digunakan oleh
+                  <strong>Nusa Tirta Teknologi</strong>
+                  untuk menghubungi saya terkait request demo ini.
+                </label>
+              </div>
+
+              <!-- SUBMIT -->
+
+              <button type="submit" class="submit-btn">
+                <i class="fa-solid fa-calendar-check"></i>
+
+                Request Demo Sekarang
+              </button>
+            </form>
+          </div>
+
+          <!-- =====================================================
+                 SIDEBAR
+            ===================================================== -->
+
+          <div class="sidebar">
+            <!-- BENEFIT -->
+
+            <div class="info-card">
+              <h3>Apa yang akan Anda lihat?</h3>
+
+              <p>
+                Demo langsung workflow TTE terintegrasi dengan Rekam Medis
+                Elektronik.
+              </p>
+
+              <ul class="benefit-list">
+                <li>
+                  <i class="fa-solid fa-check"></i>
+
+                  <span> Workflow tanda tangan dokumen RME </span>
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+
+                  <span> Resume Medis, CPPT dan dokumen klinis </span>
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+
+                  <span> QR Code verifikasi dokumen </span>
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+
+                  <span> Digital Certificate & Timestamp </span>
+                </li>
+
+                <li>
+                  <i class="fa-solid fa-check"></i>
+
+                  <span> Status Signature & Audit Trail </span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- PROCESS -->
+
+            <div class="process-card">
+              <h3>Bagaimana prosesnya?</h3>
+
+              <div class="process">
+                <div class="process-number">1</div>
+
+                <div class="process-content">
+                  <h4>Isi Request Demo</h4>
+
+                  <p>Berikan informasi kebutuhan institusi Anda.</p>
+                </div>
+              </div>
+
+              <div class="process">
+                <div class="process-number">2</div>
+
+                <div class="process-content">
+                  <h4>Konsultasi Kebutuhan</h4>
+
+                  <p>Tim kami akan memahami workflow yang digunakan.</p>
+                </div>
+              </div>
+
+              <div class="process">
+                <div class="process-number">3</div>
+
+                <div class="process-content">
+                  <h4>Live Product Demo</h4>
+
+                  <p>Lihat integrasi sistem secara langsung.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONTACT -->
+
+            <div class="contact-card">
+              <h3>Butuh Demo Lebih Cepat?</h3>
+
+              <p>Hubungi tim kami langsung melalui WhatsApp.</p>
+
+              <a
+                href="https://wa.me/6282166524717"
+                class="contact-button"
+                target="_blank"
+              >
+                <i class="fa-brands fa-whatsapp"></i>
+
+                Chat via WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+     TRUST
+===================================================== -->
+
+    <section class="trust-section">
+      <div class="container">
+        <div class="trust-header">
+          <h2>Enterprise Digital Healthcare</h2>
+
+          <p>Solusi digital untuk workflow dokumen medis modern.</p>
+        </div>
+
+        <div class="trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon">
+              <i class="fa-solid fa-file-signature"></i>
+            </div>
+
+            <h4>Digital Signature</h4>
+
+            <p>Tanda tangan dokumen secara digital.</p>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">
+              <i class="fa-solid fa-file-medical"></i>
+            </div>
+
+            <h4>RME Integration</h4>
+
+            <p>Terintegrasi dengan dokumen rekam medis.</p>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+
+            <h4>QR Verification</h4>
+
+            <p>Verifikasi dokumen melalui QR Code.</p>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h4>Secure Workflow</h4>
+
+            <p>Audit trail dan informasi signature.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+     FOOTER
+===================================================== -->
+
+    <footer>
+      <div class="container">
+        <div class="footer-wrapper">
+          <div class="footer-brand">TTE × Medicine HIS</div>
+
+          <div class="footer-text">
+            © 2026 Nusa Tirta Teknologi. All Rights Reserved.
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =====================================================
+     SUCCESS MODAL
+===================================================== -->
+
+    <div class="modal" id="successModal">
+      <div class="modal-box">
+        <div class="success-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h2>Request Demo Berhasil!</h2>
+
+        <p>
+          Terima kasih. Data request demo Anda telah kami terima. Tim Nusa Tirta
+          Teknologi akan menghubungi Anda untuk mengatur jadwal demo.
+        </p>
+
+        <button class="modal-close" onclick="closeModal()">Selesai</button>
+      </div>
+    </div>
+    <!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+    <script>
+      const form = document.getElementById("demoForm");
+
+      const modal = document.getElementById("successModal");
+
+      /* ==========================================
+     USER LOCATION DATA
+  ========================================== */
+
+      let userLocation = {
+        latitude: null,
+
+        longitude: null,
+
+        accuracy: null,
+
+        captured_at: null,
+      };
+
+      /* ==========================================
+     GET USER LOCATION
+  ========================================== */
+
+      function getUserLocation() {
+        return new Promise(function (resolve) {
+          /* Browser tidak mendukung GPS */
+
+          if (!navigator.geolocation) {
+            console.warn("Browser tidak mendukung Geolocation.");
+
+            resolve(null);
+
+            return;
+          }
+
+          navigator.geolocation.getCurrentPosition(
+            /* ==========================================
+           SUCCESS GET LOCATION
+        ========================================== */
+
+            function (position) {
+              userLocation = {
+                latitude: position.coords.latitude,
+
+                longitude: position.coords.longitude,
+
+                accuracy: position.coords.accuracy,
+
+                captured_at: new Date().toISOString(),
+              };
+
+              console.log("USER LOCATION:", userLocation);
+
+              resolve(userLocation);
+            },
+
+            /* ==========================================
+           ERROR GET LOCATION
+        ========================================== */
+
+            function (error) {
+              console.warn("Lokasi tidak berhasil diambil:", error.message);
+
+              /*
+            Request tetap bisa dikirim
+            walaupun user menolak lokasi
+          */
+
+              userLocation = {
+                latitude: null,
+
+                longitude: null,
+
+                accuracy: null,
+
+                captured_at: null,
+              };
+
+              resolve(null);
+            },
+
+            /* ==========================================
+           GEOLOCATION OPTIONS
+        ========================================== */
+
+            {
+              enableHighAccuracy: true,
+
+              timeout: 10000,
+
+              maximumAge: 60000,
+            },
+          );
+        });
+      }
+
+      /* ==========================================
+     SUBMIT FORM KE PHP API
+  ========================================== */
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const submitButton = form.querySelector(".submit-btn");
+
+        const originalButton = submitButton.innerHTML;
+
+        try {
+          /* ==========================================
+           LOADING: GET LOCATION
+        ========================================== */
+
+          submitButton.disabled = true;
+
+          submitButton.innerHTML = `
+          <i class="fa-solid fa-location-dot fa-bounce"></i>
+          Mengambil Lokasi...
+        `;
+
+          /* ==========================================
+           GET USER LOCATION
+        ========================================== */
+
+          await getUserLocation();
+
+          /* ==========================================
+           GET FORM DATA
+        ========================================== */
+
+          const formData = {
+            name: document.getElementById("name").value.trim(),
+
+            position: document.getElementById("position").value.trim(),
+
+            institution: document.getElementById("institution").value.trim(),
+
+            email: document.getElementById("email").value.trim(),
+
+            phone: document.getElementById("phone").value.trim(),
+
+            city: document.getElementById("city").value.trim(),
+
+            facility: document.getElementById("facility").value,
+
+            product: document.querySelector('input[name="product"]:checked')
+              .value,
+
+            needs: document.getElementById("needs").value.trim(),
+
+            date: document.getElementById("date").value,
+
+            time: document.getElementById("time").value,
+
+            /* ==========================================
+             LOCATION DATA
+          ========================================== */
+
+            latitude: userLocation.latitude,
+
+            longitude: userLocation.longitude,
+
+            accuracy: userLocation.accuracy,
+
+            location_captured_at: userLocation.captured_at,
+          };
+
+          console.log("REQUEST DEMO DATA:", formData);
+
+          /* ==========================================
+           LOADING: SEND REQUEST
+        ========================================== */
+
+          submitButton.innerHTML = `
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Mengirim Request...
+        `;
+
+          /* ==========================================
+           SEND DATA TO PHP CONTROLLER
+        ========================================== */
+
+          const response = await fetch(
+            "api/controller/DemoRequestController.php",
+
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify(formData),
+            },
+          );
+
+          /* ==========================================
+           GET RESPONSE
+        ========================================== */
+
+          const result = await response.json();
+
+          console.log("API RESPONSE:", result);
+
+          /* ==========================================
+           SUCCESS
+        ========================================== */
+
+          if (result.success) {
+            modal.classList.add("active");
+
+            console.log("Request Demo berhasil disimpan. ID:", result.data?.id);
+          } else {
+            alert(
+              result.message || "Terjadi kesalahan saat mengirim request demo.",
+            );
+          }
+        } catch (error) {
+          /* ==========================================
+           ERROR
+        ========================================== */
+
+          console.error("FETCH ERROR:", error);
+
+          alert(
+            "Gagal terhubung ke server. " +
+              "Silakan periksa koneksi atau server.",
+          );
+        } finally {
+          /* ==========================================
+           RESET BUTTON
+        ========================================== */
+
+          submitButton.disabled = false;
+
+          submitButton.innerHTML = originalButton;
+        }
+      });
+
+      /* ==========================================
+     CLOSE MODAL
+  ========================================== */
+
+      function closeModal() {
+        modal.classList.remove("active");
+
+        form.reset();
+
+        /* Reset Location */
+
+        userLocation = {
+          latitude: null,
+
+          longitude: null,
+
+          accuracy: null,
+
+          captured_at: null,
+        };
+      }
+
+      /* ==========================================
+     CLOSE MODAL CLICK OUTSIDE
+  ========================================== */
+
+      modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>

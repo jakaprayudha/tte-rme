@@ -1,0 +1,2540 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>TTE RME - SIMRS Integration</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      /* =========================================
+           RESET
+        ========================================= */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+
+        --success: #16a34a;
+        --success-dark: #15803d;
+
+        --warning: #f59e0b;
+        --danger: #dc2626;
+
+        --bg: #f4f7fb;
+
+        --card: #ffffff;
+
+        --text: #172033;
+        --muted: #6b7280;
+
+        --border: #e5e7eb;
+
+        --sidebar: #ffffff;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+
+        background: var(--bg);
+
+        color: var(--text);
+      }
+
+      /* =========================================
+           TOPBAR
+        ========================================= */
+
+      .topbar {
+        height: 72px;
+
+        background: #ffffff;
+
+        border-bottom: 1px solid var(--border);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 28px;
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 100;
+      }
+
+      .brand {
+        display: flex;
+
+        align-items: center;
+
+        gap: 14px;
+      }
+
+      .brand-logo {
+        width: 44px;
+
+        height: 44px;
+
+        border-radius: 12px;
+
+        background: linear-gradient(135deg, #2563eb, #0ea5e9);
+
+        color: white;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 20px;
+
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+
+        font-weight: 800;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+
+        color: var(--muted);
+      }
+
+      .topbar-right {
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+      }
+
+      .system-status {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 12px;
+
+        color: var(--success);
+
+        background: #f0fdf4;
+
+        padding: 8px 12px;
+
+        border-radius: 20px;
+      }
+
+      .status-dot {
+        width: 8px;
+
+        height: 8px;
+
+        border-radius: 50%;
+
+        background: var(--success);
+      }
+
+      .doctor-info {
+        text-align: right;
+      }
+
+      .doctor-info strong {
+        display: block;
+
+        font-size: 12px;
+      }
+
+      .doctor-info span {
+        font-size: 10px;
+
+        color: var(--muted);
+      }
+
+      .doctor-avatar {
+        width: 42px;
+
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #dbeafe;
+
+        color: var(--primary);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-weight: 800;
+      }
+
+      /* =========================================
+           MAIN LAYOUT
+        ========================================= */
+
+      .app-layout {
+        display: grid;
+
+        grid-template-columns:
+          300px
+          1fr
+          310px;
+
+        min-height: calc(100vh - 72px);
+      }
+
+      /* =========================================
+           LEFT SIDEBAR
+        ========================================= */
+
+      .sidebar {
+        background: var(--sidebar);
+
+        border-right: 1px solid var(--border);
+
+        padding: 22px;
+
+        overflow-y: auto;
+      }
+
+      .sidebar-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 18px;
+      }
+
+      .sidebar-header h3 {
+        font-size: 14px;
+      }
+
+      .badge-count {
+        background: #eff6ff;
+
+        color: var(--primary);
+
+        padding: 5px 9px;
+
+        border-radius: 20px;
+
+        font-size: 10px;
+
+        font-weight: 700;
+      }
+
+      .search-box {
+        position: relative;
+
+        margin-bottom: 20px;
+      }
+
+      .search-box i {
+        position: absolute;
+
+        left: 13px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #94a3b8;
+      }
+
+      .search-box input {
+        width: 100%;
+
+        padding: 11px 12px 11px 38px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 10px;
+
+        font-family: inherit;
+
+        outline: none;
+      }
+
+      .search-box input:focus {
+        border-color: var(--primary);
+      }
+
+      /* PATIENT */
+
+      .patient-card {
+        padding: 14px;
+
+        border-radius: 13px;
+
+        cursor: pointer;
+
+        margin-bottom: 9px;
+
+        border: 1px solid transparent;
+
+        transition: 0.2s;
+      }
+
+      .patient-card:hover {
+        background: #f8fafc;
+      }
+
+      .patient-card.active {
+        background: #eff6ff;
+
+        border-color: #bfdbfe;
+      }
+
+      .patient-top {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+      }
+
+      .patient-avatar {
+        width: 42px;
+
+        height: 42px;
+
+        border-radius: 50%;
+
+        background: #e0e7ff;
+
+        color: #4338ca;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 13px;
+
+        font-weight: 800;
+      }
+
+      .patient-name {
+        font-size: 12px;
+
+        font-weight: 700;
+      }
+
+      .patient-mrn {
+        font-size: 10px;
+
+        color: var(--muted);
+
+        margin-top: 4px;
+      }
+
+      .patient-meta {
+        margin-top: 10px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        font-size: 10px;
+
+        color: var(--muted);
+      }
+
+      /* =========================================
+           CONTENT
+        ========================================= */
+
+      .content {
+        padding: 28px;
+
+        overflow-y: auto;
+      }
+
+      .breadcrumb {
+        font-size: 11px;
+
+        color: var(--muted);
+
+        margin-bottom: 12px;
+      }
+
+      .page-header {
+        margin-bottom: 24px;
+      }
+
+      .page-header h1 {
+        font-size: 24px;
+
+        font-weight: 800;
+      }
+
+      .page-header p {
+        margin-top: 6px;
+
+        font-size: 12px;
+
+        color: var(--muted);
+      }
+
+      /* =========================================
+           STEP INDICATOR
+        ========================================= */
+
+      .steps {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 25px;
+      }
+
+      .step {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 11px;
+
+        color: #94a3b8;
+      }
+
+      .step-number {
+        width: 26px;
+
+        height: 26px;
+
+        border-radius: 50%;
+
+        background: #e5e7eb;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 10px;
+
+        font-weight: 700;
+      }
+
+      .step.active {
+        color: var(--primary);
+
+        font-weight: 700;
+      }
+
+      .step.active .step-number {
+        background: var(--primary);
+
+        color: white;
+      }
+
+      .step-line {
+        width: 35px;
+
+        height: 1px;
+
+        background: #d1d5db;
+      }
+
+      /* =========================================
+           DOCUMENT SELECT
+        ========================================= */
+
+      .section-title {
+        font-size: 14px;
+
+        margin-bottom: 14px;
+      }
+
+      .document-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 15px;
+
+        margin-bottom: 25px;
+      }
+
+      .document-card {
+        background: white;
+
+        border: 1px solid var(--border);
+
+        border-radius: 15px;
+
+        padding: 18px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+      }
+
+      .document-card:hover {
+        transform: translateY(-3px);
+
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      }
+
+      .document-card.active {
+        border-color: var(--primary);
+
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .document-icon {
+        width: 46px;
+
+        height: 46px;
+
+        border-radius: 12px;
+
+        background: #eff6ff;
+
+        color: var(--primary);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 19px;
+
+        margin-bottom: 14px;
+      }
+
+      .document-card h4 {
+        font-size: 13px;
+      }
+
+      .document-card p {
+        margin-top: 6px;
+
+        font-size: 10px;
+
+        color: var(--muted);
+      }
+
+      .document-status {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        margin-top: 14px;
+
+        padding: 5px 9px;
+
+        border-radius: 20px;
+
+        font-size: 9px;
+
+        font-weight: 700;
+      }
+
+      .pending {
+        background: #fef3c7;
+
+        color: #92400e;
+      }
+
+      .signed {
+        background: #dcfce7;
+
+        color: #166534;
+      }
+
+      /* =========================================
+           DOCUMENT VIEWER
+        ========================================= */
+
+      .viewer {
+        background: white;
+
+        border: 1px solid var(--border);
+
+        border-radius: 18px;
+
+        overflow: hidden;
+      }
+
+      .viewer-header {
+        padding: 16px 20px;
+
+        border-bottom: 1px solid var(--border);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+      }
+
+      .viewer-document {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+      }
+
+      .viewer-document i {
+        color: var(--primary);
+      }
+
+      .viewer-document h3 {
+        font-size: 14px;
+      }
+
+      .viewer-actions {
+        display: flex;
+
+        gap: 8px;
+      }
+
+      .btn {
+        border: none;
+
+        border-radius: 9px;
+
+        padding: 10px 14px;
+
+        font-family: inherit;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+      }
+
+      .btn-outline {
+        background: white;
+
+        border: 1px solid var(--border);
+
+        color: var(--text);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+      }
+
+      .btn-success {
+        background: var(--success);
+
+        color: white;
+      }
+
+      /* =========================================
+           DOCUMENT PAPER
+        ========================================= */
+
+      .viewer-body {
+        padding: 35px;
+
+        background: #e9eef5;
+      }
+
+      .paper {
+        max-width: 850px;
+
+        min-height: 900px;
+
+        margin: auto;
+
+        background: white;
+
+        padding: 55px;
+
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+      }
+
+      .paper-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding-bottom: 18px;
+
+        border-bottom: 2px solid #1f2937;
+      }
+
+      .hospital-logo {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+      }
+
+      .hospital-icon {
+        width: 48px;
+
+        height: 48px;
+
+        background: var(--primary);
+
+        color: white;
+
+        border-radius: 11px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 20px;
+      }
+
+      .hospital-logo h2 {
+        font-size: 14px;
+      }
+
+      .hospital-logo p {
+        font-size: 9px;
+
+        color: var(--muted);
+
+        margin-top: 4px;
+      }
+
+      .paper-code {
+        text-align: right;
+
+        font-size: 9px;
+
+        color: var(--muted);
+      }
+
+      .document-title {
+        text-align: center;
+
+        margin: 30px 0;
+      }
+
+      .document-title h2 {
+        font-size: 20px;
+      }
+
+      .document-title p {
+        font-size: 10px;
+
+        color: var(--muted);
+
+        margin-top: 6px;
+      }
+
+      /* =========================================
+           PATIENT TABLE
+        ========================================= */
+
+      .patient-table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        margin-bottom: 28px;
+      }
+
+      .patient-table td {
+        border: 1px solid #d1d5db;
+
+        padding: 8px;
+
+        font-size: 11px;
+      }
+
+      .patient-table td:first-child {
+        width: 180px;
+
+        font-weight: 700;
+
+        background: #f8fafc;
+      }
+
+      /* =========================================
+           MEDICAL CONTENT
+        ========================================= */
+
+      .medical-content h3 {
+        font-size: 12px;
+
+        margin: 20px 0 8px;
+      }
+
+      .medical-content p {
+        font-size: 11px;
+
+        line-height: 1.8;
+
+        color: #374151;
+      }
+
+      /* =========================================
+           SIGNATURE AREA
+        ========================================= */
+
+      .signature-section {
+        margin-top: 60px;
+
+        display: flex;
+
+        justify-content: flex-end;
+      }
+
+      .signature-box {
+        width: 320px;
+      }
+
+      .signature-placeholder {
+        height: 120px;
+
+        border: 2px dashed #cbd5e1;
+
+        border-radius: 12px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #94a3b8;
+
+        font-size: 11px;
+      }
+
+      .signature-placeholder i {
+        font-size: 30px;
+
+        margin-bottom: 10px;
+      }
+
+      /* SIGNED CERTIFICATE */
+
+      .signature-certificate {
+        display: none;
+
+        border: 2px solid #16a34a;
+
+        border-radius: 12px;
+
+        overflow: hidden;
+      }
+
+      .certificate-header {
+        background: #f0fdf4;
+
+        padding: 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        border-bottom: 1px solid #bbf7d0;
+      }
+
+      .certificate-header i {
+        width: 35px;
+
+        height: 35px;
+
+        border-radius: 50%;
+
+        background: var(--success);
+
+        color: white;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+      }
+
+      .certificate-header h4 {
+        font-size: 11px;
+
+        color: #166534;
+      }
+
+      .certificate-header span {
+        display: block;
+
+        font-size: 9px;
+
+        color: #15803d;
+
+        margin-top: 3px;
+      }
+
+      .certificate-body {
+        padding: 14px;
+
+        display: grid;
+
+        grid-template-columns:
+          1fr
+          100px;
+
+        gap: 15px;
+      }
+
+      .certificate-info {
+        font-size: 10px;
+      }
+
+      .certificate-info h3 {
+        font-size: 12px;
+
+        margin-bottom: 5px;
+      }
+
+      .certificate-info p {
+        color: var(--muted);
+
+        line-height: 1.7;
+      }
+
+      .certificate-id {
+        margin-top: 10px;
+
+        background: #f8fafc;
+
+        padding: 8px;
+
+        border-radius: 7px;
+
+        font-size: 8px;
+
+        color: #64748b;
+      }
+
+      .qr-container {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex-direction: column;
+      }
+
+      #qrcode {
+        width: 80px;
+
+        height: 80px;
+      }
+
+      #qrcode img {
+        width: 80px !important;
+
+        height: 80px !important;
+      }
+
+      .qr-text {
+        margin-top: 5px;
+
+        font-size: 7px;
+
+        color: var(--muted);
+
+        text-align: center;
+      }
+
+      /* =========================================
+           RIGHT PANEL
+        ========================================= */
+
+      .right-panel {
+        background: white;
+
+        border-left: 1px solid var(--border);
+
+        padding: 22px;
+
+        overflow-y: auto;
+      }
+
+      .panel-title {
+        font-size: 14px;
+
+        margin-bottom: 18px;
+      }
+
+      /* PATIENT PROFILE */
+
+      .patient-profile {
+        text-align: center;
+
+        padding-bottom: 20px;
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      .profile-avatar {
+        width: 68px;
+
+        height: 68px;
+
+        border-radius: 50%;
+
+        margin: auto;
+
+        background: #dbeafe;
+
+        color: var(--primary);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 23px;
+
+        font-weight: 800;
+      }
+
+      .patient-profile h3 {
+        font-size: 14px;
+
+        margin-top: 12px;
+      }
+
+      .patient-profile span {
+        display: block;
+
+        margin-top: 5px;
+
+        font-size: 10px;
+
+        color: var(--muted);
+      }
+
+      /* INFO */
+
+      .info-list {
+        margin-top: 20px;
+      }
+
+      .info-item {
+        margin-bottom: 16px;
+      }
+
+      .info-label {
+        display: block;
+
+        font-size: 9px;
+
+        color: var(--muted);
+
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        font-size: 11px;
+
+        font-weight: 700;
+      }
+
+      /* SIGNATURE STATUS */
+
+      .signature-status-card {
+        margin-top: 25px;
+
+        padding: 16px;
+
+        background: #f8fafc;
+
+        border-radius: 14px;
+
+        border: 1px solid var(--border);
+      }
+
+      .signature-status-header {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+      }
+
+      .signature-status-icon {
+        width: 38px;
+
+        height: 38px;
+
+        border-radius: 50%;
+
+        background: #fef3c7;
+
+        color: #92400e;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+      }
+
+      .signature-status-header h4 {
+        font-size: 11px;
+      }
+
+      .signature-status-header p {
+        margin-top: 3px;
+
+        font-size: 9px;
+
+        color: #92400e;
+      }
+
+      /* AUDIT TRAIL */
+
+      .audit-section {
+        margin-top: 25px;
+      }
+
+      .audit-section h4 {
+        font-size: 12px;
+
+        margin-bottom: 14px;
+      }
+
+      .audit-item {
+        position: relative;
+
+        padding-left: 20px;
+
+        padding-bottom: 18px;
+
+        border-left: 1px solid #d1d5db;
+      }
+
+      .audit-item:last-child {
+        border-left: none;
+      }
+
+      .audit-dot {
+        position: absolute;
+
+        left: -5px;
+
+        top: 3px;
+
+        width: 9px;
+
+        height: 9px;
+
+        border-radius: 50%;
+
+        background: var(--primary);
+      }
+
+      .audit-item h5 {
+        font-size: 10px;
+      }
+
+      .audit-item p {
+        font-size: 9px;
+
+        color: var(--muted);
+
+        margin-top: 4px;
+      }
+
+      /* =========================================
+           MODAL
+        ========================================= */
+
+      .modal {
+        position: fixed;
+
+        inset: 0;
+
+        background: rgba(15, 23, 42, 0.6);
+
+        display: none;
+
+        align-items: center;
+
+        justify-content: center;
+
+        z-index: 999;
+
+        padding: 20px;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-box {
+        width: 460px;
+
+        background: white;
+
+        border-radius: 20px;
+
+        padding: 30px;
+
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+      }
+
+      .modal-icon {
+        width: 58px;
+
+        height: 58px;
+
+        border-radius: 15px;
+
+        background: #eff6ff;
+
+        color: var(--primary);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 24px;
+
+        margin-bottom: 18px;
+      }
+
+      .modal-box h2 {
+        font-size: 18px;
+      }
+
+      .modal-box > p {
+        margin-top: 9px;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+
+        color: var(--muted);
+      }
+
+      .modal-info {
+        margin-top: 20px;
+
+        padding: 15px;
+
+        border-radius: 12px;
+
+        background: #f8fafc;
+      }
+
+      .modal-info-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        padding: 8px 0;
+
+        font-size: 11px;
+      }
+
+      .modal-info-row span {
+        color: var(--muted);
+      }
+
+      .modal-footer {
+        margin-top: 22px;
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+      }
+
+      /* =========================================
+           TOAST
+        ========================================= */
+
+      .toast {
+        position: fixed;
+
+        right: 25px;
+
+        bottom: 25px;
+
+        background: #166534;
+
+        color: white;
+
+        padding: 15px 20px;
+
+        border-radius: 12px;
+
+        display: none;
+
+        align-items: center;
+
+        gap: 10px;
+
+        font-size: 12px;
+
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+
+        z-index: 2000;
+      }
+
+      .toast.show {
+        display: flex;
+      }
+
+      /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+      @media (max-width: 1200px) {
+        .app-layout {
+          grid-template-columns:
+            270px
+            1fr;
+        }
+
+        .right-panel {
+          display: none;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .sidebar {
+          display: none;
+        }
+
+        .app-layout {
+          display: block;
+        }
+
+        .content {
+          padding: 15px;
+        }
+
+        .document-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .paper {
+          padding: 25px;
+        }
+
+        .certificate-body {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================================
+     TOPBAR
+========================================= -->
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-file-signature"></i>
+        </div>
+
+        <div class="brand-text">
+          <h2>TTE RME</h2>
+
+          <span> Electronic Medical Record Signature </span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+
+          TTE Service Online
+        </div>
+
+        <div class="doctor-info">
+          <strong> dr. Rahmat Hidayat, Sp.PD </strong>
+
+          <span> Dokter Penanggung Jawab </span>
+        </div>
+
+        <div class="doctor-avatar">RH</div>
+      </div>
+    </header>
+
+    <!-- =========================================
+     APPLICATION
+========================================= -->
+
+    <div class="app-layout">
+      <!-- =====================================
+         LEFT SIDEBAR
+    ====================================== -->
+
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h3>Daftar Pasien</h3>
+
+          <span class="badge-count"> 4 Pasien </span>
+        </div>
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+
+          <input type="text" placeholder="Cari pasien..." id="searchPatient" />
+        </div>
+
+        <!-- PATIENT 1 -->
+
+        <div
+          class="patient-card active"
+          data-name="Andi Saputra"
+          data-mrn="00001234"
+        >
+          <div class="patient-top">
+            <div class="patient-avatar">AS</div>
+
+            <div>
+              <div class="patient-name">Andi Saputra</div>
+
+              <div class="patient-mrn">MRN: 00001234</div>
+            </div>
+          </div>
+
+          <div class="patient-meta">
+            <span>
+              <i class="fa-solid fa-bed"></i>
+              Rawat Inap
+            </span>
+
+            <span> Aktif </span>
+          </div>
+        </div>
+
+        <!-- PATIENT 2 -->
+
+        <div
+          class="patient-card"
+          data-name="Siti Wulandari"
+          data-mrn="00001235"
+        >
+          <div class="patient-top">
+            <div class="patient-avatar">SW</div>
+
+            <div>
+              <div class="patient-name">Siti Wulandari</div>
+
+              <div class="patient-mrn">MRN: 00001235</div>
+            </div>
+          </div>
+
+          <div class="patient-meta">
+            <span>
+              <i class="fa-solid fa-hospital"></i>
+              Rawat Jalan
+            </span>
+
+            <span> Aktif </span>
+          </div>
+        </div>
+
+        <!-- PATIENT 3 -->
+
+        <div class="patient-card" data-name="Budi Santoso" data-mrn="00001236">
+          <div class="patient-top">
+            <div class="patient-avatar">BS</div>
+
+            <div>
+              <div class="patient-name">Budi Santoso</div>
+
+              <div class="patient-mrn">MRN: 00001236</div>
+            </div>
+          </div>
+
+          <div class="patient-meta">
+            <span>
+              <i class="fa-solid fa-bed"></i>
+              Rawat Inap
+            </span>
+
+            <span> Aktif </span>
+          </div>
+        </div>
+
+        <!-- PATIENT 4 -->
+
+        <div class="patient-card" data-name="Rina Maharani" data-mrn="00001237">
+          <div class="patient-top">
+            <div class="patient-avatar">RM</div>
+
+            <div>
+              <div class="patient-name">Rina Maharani</div>
+
+              <div class="patient-mrn">MRN: 00001237</div>
+            </div>
+          </div>
+
+          <div class="patient-meta">
+            <span>
+              <i class="fa-solid fa-hospital"></i>
+              Rawat Jalan
+            </span>
+
+            <span> Aktif </span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+      <main class="content">
+        <div class="breadcrumb">
+          SIMRS / Rekam Medis Elektronik / Tanda Tangan Elektronik
+        </div>
+
+        <div class="page-header">
+          <h1>Tanda Tangan Elektronik RME</h1>
+
+          <p>Pilih dan tandatangani dokumen rekam medis elektronik pasien.</p>
+        </div>
+
+        <!-- =====================================
+             STEPS
+        ====================================== -->
+
+        <div class="steps">
+          <div class="step active">
+            <div class="step-number">1</div>
+
+            Pilih Pasien
+          </div>
+
+          <div class="step-line"></div>
+
+          <div class="step active">
+            <div class="step-number">2</div>
+
+            Pilih Dokumen
+          </div>
+
+          <div class="step-line"></div>
+
+          <div class="step active">
+            <div class="step-number">3</div>
+
+            Review & TTE
+          </div>
+        </div>
+
+        <!-- =====================================
+             DOCUMENT SELECT
+        ====================================== -->
+
+        <h3 class="section-title">Pilih Berkas RME</h3>
+
+        <div class="document-grid">
+          <div class="document-card active" data-type="resume">
+            <div class="document-icon">
+              <i class="fa-solid fa-file-medical"></i>
+            </div>
+
+            <h4>Resume Medis</h4>
+
+            <p>Resume perawatan pasien.</p>
+
+            <span class="document-status pending">
+              <i class="fa-solid fa-clock"></i>
+              Menunggu TTE
+            </span>
+          </div>
+
+          <div class="document-card" data-type="cppt">
+            <div class="document-icon">
+              <i class="fa-solid fa-notes-medical"></i>
+            </div>
+
+            <h4>CPPT</h4>
+
+            <p>Catatan Perkembangan Pasien.</p>
+
+            <span class="document-status pending">
+              <i class="fa-solid fa-clock"></i>
+              Menunggu TTE
+            </span>
+          </div>
+
+          <div class="document-card" data-type="soap">
+            <div class="document-icon">
+              <i class="fa-solid fa-file-waveform"></i>
+            </div>
+
+            <h4>Catatan SOAP</h4>
+
+            <p>Subjective, Objective, Assessment.</p>
+
+            <span class="document-status pending">
+              <i class="fa-solid fa-clock"></i>
+              Menunggu TTE
+            </span>
+          </div>
+        </div>
+
+        <!-- =====================================
+             DOCUMENT VIEWER
+        ====================================== -->
+
+        <div class="viewer">
+          <div class="viewer-header">
+            <div class="viewer-document">
+              <i class="fa-solid fa-file-medical"></i>
+
+              <h3 id="viewerTitle">Resume Medis Pasien</h3>
+            </div>
+
+            <div class="viewer-actions">
+              <button class="btn btn-outline">
+                <i class="fa-solid fa-print"></i>
+
+                Print
+              </button>
+
+              <button class="btn btn-primary" id="signButton">
+                <i class="fa-solid fa-signature"></i>
+
+                Tanda Tangani
+              </button>
+            </div>
+          </div>
+
+          <!-- PAPER -->
+
+          <div class="viewer-body">
+            <div class="paper">
+              <!-- HEADER -->
+
+              <div class="paper-header">
+                <div class="hospital-logo">
+                  <div class="hospital-icon">
+                    <i class="fa-solid fa-hospital"></i>
+                  </div>
+
+                  <div>
+                    <h2>RSU SAPTA MEDIKA</h2>
+
+                    <p>Sistem Informasi Manajemen Rumah Sakit</p>
+                  </div>
+                </div>
+
+                <div class="paper-code">RME-DOC-2026-000123</div>
+              </div>
+
+              <!-- TITLE -->
+
+              <div class="document-title">
+                <h2 id="documentTitle">RESUME MEDIS</h2>
+
+                <p>Rekam Medis Elektronik</p>
+              </div>
+
+              <!-- PATIENT TABLE -->
+
+              <table class="patient-table">
+                <tr>
+                  <td>Nama Pasien</td>
+
+                  <td id="documentPatientName">Andi Saputra</td>
+                </tr>
+
+                <tr>
+                  <td>No. Rekam Medis</td>
+
+                  <td id="documentPatientMRN">00001234</td>
+                </tr>
+
+                <tr>
+                  <td>Tanggal Lahir</td>
+
+                  <td>12 Mei 1985</td>
+                </tr>
+
+                <tr>
+                  <td>Jenis Kelamin</td>
+
+                  <td>Laki-laki</td>
+                </tr>
+
+                <tr>
+                  <td>DPJP</td>
+
+                  <td>dr. Rahmat Hidayat, Sp.PD</td>
+                </tr>
+              </table>
+
+              <!-- MEDICAL CONTENT -->
+
+              <div class="medical-content" id="medicalContent">
+                <h3>Diagnosa Utama</h3>
+
+                <p>
+                  Community Acquired Pneumonia (CAP). Kondisi pasien membaik
+                  setelah mendapatkan terapi dan observasi selama perawatan.
+                </p>
+
+                <h3>Keluhan Utama</h3>
+
+                <p>
+                  Pasien datang dengan keluhan demam, batuk berdahak dan sesak
+                  napas.
+                </p>
+
+                <h3>Terapi</h3>
+
+                <p>
+                  Antibiotik, terapi oksigen, cairan intravena dan terapi
+                  suportif.
+                </p>
+
+                <h3>Kondisi Saat Pulang</h3>
+
+                <p>
+                  Pasien dalam kondisi stabil dan diperbolehkan melanjutkan
+                  perawatan di rumah.
+                </p>
+              </div>
+
+              <!-- =====================================
+                         SIGNATURE
+                    ====================================== -->
+
+              <div class="signature-section">
+                <div class="signature-box">
+                  <!-- BEFORE SIGN -->
+
+                  <div class="signature-placeholder" id="signaturePlaceholder">
+                    <i class="fa-solid fa-signature"></i>
+
+                    Dokumen Belum Ditandatangani
+                  </div>
+
+                  <!-- AFTER SIGN -->
+
+                  <div class="signature-certificate" id="signatureCertificate">
+                    <div class="certificate-header">
+                      <i class="fa-solid fa-shield-check"></i>
+
+                      <div>
+                        <h4>DIGITAL SIGNATURE VERIFIED</h4>
+
+                        <span>
+                          Dokumen telah ditandatangani secara elektronik
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="certificate-body">
+                      <div class="certificate-info">
+                        <h3>dr. Rahmat Hidayat, Sp.PD</h3>
+
+                        <p>Dokter Penanggung Jawab Pelayanan</p>
+
+                        <p id="signatureTimestamp">Timestamp: -</p>
+
+                        <div class="certificate-id" id="certificateId">
+                          Certificate ID: -
+                        </div>
+                      </div>
+
+                      <!-- QR -->
+
+                      <div class="qr-container">
+                        <div id="qrcode"></div>
+
+                        <div class="qr-text">Scan untuk verifikasi</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- =====================================
+         RIGHT PANEL
+    ====================================== -->
+
+      <aside class="right-panel">
+        <h3 class="panel-title">Informasi Pasien</h3>
+
+        <div class="patient-profile">
+          <div class="profile-avatar" id="profileInitial">AS</div>
+
+          <h3 id="profileName">Andi Saputra</h3>
+
+          <span> Pasien Aktif </span>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span class="info-label"> No. Rekam Medis </span>
+
+            <span class="info-value" id="profileMRN"> 00001234 </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label"> Jenis Pelayanan </span>
+
+            <span class="info-value"> Rawat Inap </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label"> Ruangan </span>
+
+            <span class="info-value"> Melati - 203 </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label"> Dokter </span>
+
+            <span class="info-value"> dr. Rahmat Hidayat, Sp.PD </span>
+          </div>
+        </div>
+
+        <!-- SIGNATURE STATUS -->
+
+        <div class="signature-status-card">
+          <div class="signature-status-header">
+            <div class="signature-status-icon" id="statusIcon">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div>
+              <h4>Status Signature</h4>
+
+              <p id="statusText">Menunggu TTE</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUDIT -->
+
+        <div class="audit-section">
+          <h4>Audit Trail</h4>
+
+          <div id="auditTrail">
+            <div class="audit-item">
+              <div class="audit-dot"></div>
+
+              <h5>Dokumen Dibuka</h5>
+
+              <p>Menunggu aktivitas</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- =========================================
+     MODAL CONFIRM
+========================================= -->
+
+    <div class="modal" id="signatureModal">
+      <div class="modal-box">
+        <div class="modal-icon">
+          <i class="fa-solid fa-file-signature"></i>
+        </div>
+
+        <h2>Konfirmasi Tanda Tangan</h2>
+
+        <p>
+          Dengan melanjutkan proses ini, Anda menyatakan bahwa isi dokumen telah
+          diperiksa dan disetujui.
+        </p>
+
+        <div class="modal-info">
+          <div class="modal-info-row">
+            <span> Dokumen </span>
+
+            <strong id="modalDocument"> Resume Medis </strong>
+          </div>
+
+          <div class="modal-info-row">
+            <span> Pasien </span>
+
+            <strong id="modalPatient"> Andi Saputra </strong>
+          </div>
+
+          <div class="modal-info-row">
+            <span> Penandatangan </span>
+
+            <strong> dr. Rahmat Hidayat </strong>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="cancelButton">Batal</button>
+
+          <button class="btn btn-primary" id="confirmButton">
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Konfirmasi & TTE
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================
+     TOAST
+========================================= -->
+
+    <div class="toast" id="toast">
+      <i class="fa-solid fa-circle-check"></i>
+
+      <span> Dokumen berhasil ditandatangani secara elektronik </span>
+    </div>
+
+    <!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+    <script>
+      /* =========================================
+       GLOBAL STATE
+    ========================================= */
+
+      let selectedDocument = "Resume Medis";
+
+      let selectedPatient = "Andi Saputra";
+
+      let selectedMRN = "00001234";
+
+      let currentDocumentType = "resume";
+
+      let signedDocuments = {};
+
+      /* =========================================
+       DOCUMENT DATA
+    ========================================= */
+
+      const documentData = {
+        resume: {
+          name: "Resume Medis",
+
+          viewer: "Resume Medis Pasien",
+
+          title: "RESUME MEDIS",
+
+          content: `
+
+                <h3>Diagnosa Utama</h3>
+
+                <p>
+                    Community Acquired Pneumonia (CAP).
+                    Kondisi pasien membaik setelah mendapatkan
+                    terapi dan observasi selama perawatan.
+                </p>
+
+
+                <h3>Keluhan Utama</h3>
+
+                <p>
+                    Pasien datang dengan keluhan demam,
+                    batuk berdahak dan sesak napas.
+                </p>
+
+
+                <h3>Terapi</h3>
+
+                <p>
+                    Antibiotik, terapi oksigen,
+                    cairan intravena dan terapi suportif.
+                </p>
+
+
+                <h3>Kondisi Saat Pulang</h3>
+
+                <p>
+                    Pasien dalam kondisi stabil dan
+                    diperbolehkan melanjutkan perawatan di rumah.
+                </p>
+
+            `,
+        },
+
+        cppt: {
+          name: "CPPT",
+
+          viewer: "Catatan Perkembangan Pasien Terintegrasi",
+
+          title: "CPPT",
+
+          content: `
+
+                <h3>Subjective</h3>
+
+                <p>
+                    Pasien mengatakan kondisi membaik.
+                    Sesak napas berkurang dan pasien
+                    dapat beristirahat dengan baik.
+                </p>
+
+
+                <h3>Objective</h3>
+
+                <p>
+                    Tekanan Darah: 120/80 mmHg<br>
+                    Nadi: 88 x/menit<br>
+                    Respirasi: 20 x/menit<br>
+                    Suhu: 36.8°C
+                </p>
+
+
+                <h3>Assessment</h3>
+
+                <p>
+                    Kondisi pasien membaik
+                    dengan respons terapi yang baik.
+                </p>
+
+
+                <h3>Plan</h3>
+
+                <p>
+                    Monitoring tanda vital,
+                    evaluasi laboratorium dan terapi lanjutan.
+                </p>
+
+            `,
+        },
+
+        soap: {
+          name: "Catatan SOAP",
+
+          viewer: "Catatan SOAP Pasien",
+
+          title: "CATATAN SOAP",
+
+          content: `
+
+                <h3>Subjective</h3>
+
+                <p>
+                    Pasien mengatakan batuk mulai berkurang.
+                </p>
+
+
+                <h3>Objective</h3>
+
+                <p>
+                    Kondisi umum baik.
+                    Saturasi oksigen 98%.
+                </p>
+
+
+                <h3>Assessment</h3>
+
+                <p>
+                    Pneumonia dalam perbaikan.
+                </p>
+
+
+                <h3>Plan</h3>
+
+                <p>
+                    Melanjutkan terapi dan observasi kondisi pasien.
+                </p>
+
+            `,
+        },
+      };
+
+      /* =========================================
+       SELECT DOCUMENT
+    ========================================= */
+
+      const documentCards = document.querySelectorAll(".document-card");
+
+      documentCards.forEach((card) => {
+        card.addEventListener("click", function () {
+          documentCards.forEach((item) => {
+            item.classList.remove("active");
+          });
+
+          this.classList.add("active");
+
+          currentDocumentType = this.dataset.type;
+
+          changeDocument(currentDocumentType);
+        });
+      });
+
+      /* =========================================
+       CHANGE DOCUMENT
+    ========================================= */
+
+      function changeDocument(type) {
+        const data = documentData[type];
+
+        selectedDocument = data.name;
+
+        document.getElementById("viewerTitle").innerText = data.viewer;
+
+        document.getElementById("documentTitle").innerText = data.title;
+
+        document.getElementById("medicalContent").innerHTML = data.content;
+
+        updateSignatureDisplay();
+      }
+
+      /* =========================================
+       PATIENT SELECT
+    ========================================= */
+
+      const patientCards = document.querySelectorAll(".patient-card");
+
+      patientCards.forEach((card) => {
+        card.addEventListener("click", function () {
+          patientCards.forEach((item) => {
+            item.classList.remove("active");
+          });
+
+          this.classList.add("active");
+
+          selectedPatient = this.dataset.name;
+
+          selectedMRN = this.dataset.mrn;
+
+          updatePatientUI();
+
+          updateSignatureDisplay();
+        });
+      });
+
+      /* =========================================
+       UPDATE PATIENT UI
+    ========================================= */
+
+      function updatePatientUI() {
+        document.getElementById("documentPatientName").innerText =
+          selectedPatient;
+
+        document.getElementById("documentPatientMRN").innerText = selectedMRN;
+
+        document.getElementById("profileName").innerText = selectedPatient;
+
+        document.getElementById("profileMRN").innerText = selectedMRN;
+
+        const initials = selectedPatient
+          .split(" ")
+          .map((word) => word[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase();
+
+        document.getElementById("profileInitial").innerText = initials;
+      }
+
+      /* =========================================
+       SIGNATURE KEY
+    ========================================= */
+
+      function getSignatureKey() {
+        return selectedMRN + "_" + currentDocumentType;
+      }
+
+      /* =========================================
+       SIGN BUTTON
+    ========================================= */
+
+      const signButton = document.getElementById("signButton");
+
+      signButton.addEventListener("click", function () {
+        const key = getSignatureKey();
+
+        if (signedDocuments[key]) {
+          showToast("Dokumen ini sudah ditandatangani");
+
+          return;
+        }
+
+        document.getElementById("modalDocument").innerText = selectedDocument;
+
+        document.getElementById("modalPatient").innerText = selectedPatient;
+
+        document.getElementById("signatureModal").classList.add("active");
+      });
+
+      /* =========================================
+       CANCEL
+    ========================================= */
+
+      document
+        .getElementById("cancelButton")
+        .addEventListener("click", function () {
+          document.getElementById("signatureModal").classList.remove("active");
+        });
+
+      /* =========================================
+       CONFIRM SIGNATURE
+    ========================================= */
+
+      document
+        .getElementById("confirmButton")
+        .addEventListener("click", function () {
+          document.getElementById("signatureModal").classList.remove("active");
+
+          const timestamp = new Date().toLocaleString("id-ID", {
+            dateStyle: "full",
+            timeStyle: "medium",
+          });
+
+          const certificateID = "CERT-TTE-" + Date.now().toString().slice(-8);
+
+          const key = getSignatureKey();
+
+          signedDocuments[key] = {
+            timestamp: timestamp,
+
+            certificateID: certificateID,
+
+            document: selectedDocument,
+
+            patient: selectedPatient,
+
+            mrn: selectedMRN,
+          };
+
+          updateSignatureDisplay();
+
+          showToast("Dokumen berhasil ditandatangani");
+        });
+
+      /* =========================================
+       UPDATE SIGNATURE DISPLAY
+    ========================================= */
+
+      function updateSignatureDisplay() {
+        const key = getSignatureKey();
+
+        const signature = signedDocuments[key];
+
+        const placeholder = document.getElementById("signaturePlaceholder");
+
+        const certificate = document.getElementById("signatureCertificate");
+
+        const statusText = document.getElementById("statusText");
+
+        const statusIcon = document.getElementById("statusIcon");
+
+        if (signature) {
+          placeholder.style.display = "none";
+
+          certificate.style.display = "block";
+
+          document.getElementById("signatureTimestamp").innerText =
+            "Timestamp: " + signature.timestamp;
+
+          document.getElementById("certificateId").innerText =
+            "Certificate ID: " + signature.certificateID;
+
+          signButton.innerHTML = `
+
+                <i class="fa-solid fa-circle-check"></i>
+                Signed
+
+            `;
+
+          signButton.classList.remove("btn-primary");
+
+          signButton.classList.add("btn-success");
+
+          statusText.innerHTML = `
+                <i class="fa-solid fa-circle-check"></i>
+                SIGNED & VERIFIED
+            `;
+
+          statusText.style.color = "#15803d";
+
+          statusIcon.style.background = "#dcfce7";
+
+          statusIcon.style.color = "#16a34a";
+
+          statusIcon.innerHTML = `
+                <i class="fa-solid fa-shield-check"></i>
+            `;
+
+          updateQR(signature);
+
+          updateAuditTrail(signature);
+
+          updateDocumentStatus(true);
+        } else {
+          placeholder.style.display = "flex";
+
+          certificate.style.display = "none";
+
+          signButton.innerHTML = `
+
+                <i class="fa-solid fa-signature"></i>
+                Tanda Tangani
+
+            `;
+
+          signButton.classList.remove("btn-success");
+
+          signButton.classList.add("btn-primary");
+
+          statusText.innerHTML = "Menunggu TTE";
+
+          statusText.style.color = "#92400e";
+
+          statusIcon.style.background = "#fef3c7";
+
+          statusIcon.style.color = "#92400e";
+
+          statusIcon.innerHTML = `
+                <i class="fa-solid fa-clock"></i>
+            `;
+
+          updateDocumentStatus(false);
+        }
+      }
+
+      /* =========================================
+       QR CODE
+    ========================================= */
+
+      function updateQR(signature) {
+        const qrContainer = document.getElementById("qrcode");
+
+        qrContainer.innerHTML = "";
+
+        const basePath = window.location.href.substring(
+          0,
+          window.location.href.lastIndexOf("/"),
+        );
+
+        const verifyURL =
+          basePath +
+          "/verify.html?id=" +
+          encodeURIComponent(signature.certificateID);
+
+        console.log("QR Verification URL:", verifyURL);
+
+        new QRCode(qrContainer, {
+          text: verifyURL,
+          width: 180,
+          height: 180,
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      }
+      /* =========================================
+       AUDIT TRAIL
+    ========================================= */
+
+      function updateAuditTrail(signature) {
+        const audit = document.getElementById("auditTrail");
+
+        audit.innerHTML = `
+
+
+            <div class="audit-item">
+
+                <div
+                    class="audit-dot"
+                    style="background:#16a34a"
+                ></div>
+
+                <h5>
+                    Digital Signature Verified
+                </h5>
+
+                <p>
+                    ${signature.timestamp}
+                </p>
+
+            </div>
+
+
+            <div class="audit-item">
+
+                <div class="audit-dot"></div>
+
+                <h5>
+                    Certificate Generated
+                </h5>
+
+                <p>
+                    ${signature.certificateID}
+                </p>
+
+            </div>
+
+
+            <div class="audit-item">
+
+                <div
+                    class="audit-dot"
+                    style="background:#64748b"
+                ></div>
+
+                <h5>
+                    Document Ready
+                </h5>
+
+                <p>
+                    ${selectedDocument}
+                </p>
+
+            </div>
+
+
+        `;
+      }
+
+      /* =========================================
+       DOCUMENT STATUS
+    ========================================= */
+
+      function updateDocumentStatus(isSigned) {
+        const activeCard = document.querySelector(
+          ".document-card.active .document-status",
+        );
+
+        if (isSigned) {
+          activeCard.classList.remove("pending");
+
+          activeCard.classList.add("signed");
+
+          activeCard.innerHTML = `
+
+                <i class="fa-solid fa-circle-check"></i>
+                Signed
+
+            `;
+        } else {
+          activeCard.classList.remove("signed");
+
+          activeCard.classList.add("pending");
+
+          activeCard.innerHTML = `
+
+                <i class="fa-solid fa-clock"></i>
+                Menunggu TTE
+
+            `;
+        }
+      }
+
+      /* =========================================
+       TOAST
+    ========================================= */
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+
+        toast.querySelector("span").innerText = message;
+
+        toast.classList.add("show");
+
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 4000);
+      }
+
+      /* =========================================
+       SEARCH PATIENT
+    ========================================= */
+
+      document
+        .getElementById("searchPatient")
+        .addEventListener("input", function () {
+          const keyword = this.value.toLowerCase();
+
+          patientCards.forEach((card) => {
+            const name = card.dataset.name.toLowerCase();
+
+            const mrn = card.dataset.mrn.toLowerCase();
+
+            if (name.includes(keyword) || mrn.includes(keyword)) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+    </script>
+  </body>
+</html>
